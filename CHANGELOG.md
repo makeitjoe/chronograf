@@ -6,6 +6,7 @@
 1. [#1885](https://github.com/influxdata/chronograf/pull/1885): Add `fill` options to data explorer and dashboard queries
 1. [#1978](https://github.com/influxdata/chronograf/pull/1978): Support editing kapacitor TICKScript
 1. [#1992](https://github.com/influxdata/chronograf/pull/1992): Add .csv download button to data explorer
+1. [#2041](https://github.com/influxdata/chronograf/pull/2041): Add now() as an option in the Dashboard date picker
 
 ### UI Improvements
 
