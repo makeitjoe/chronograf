@@ -201,7 +201,7 @@ export const HostPage = React.createClass({
     return (
       <div className="page">
         <DashboardHeader
-          buttonText={hostID}
+          dashboardName={hostID}
           autoRefresh={autoRefresh}
           timeRange={timeRange}
           isHidden={inPresentationMode}

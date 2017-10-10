@@ -1,48 +1,43 @@
 import React, {PropTypes} from 'react'
 import classnames from 'classnames'
+import _ from 'lodash'
 
 import AutoRefreshDropdown from 'shared/components/AutoRefreshDropdown'
 import TimeRangeDropdown from 'shared/components/TimeRangeDropdown'
 import SourceIndicator from 'shared/components/SourceIndicator'
 import GraphTips from 'shared/components/GraphTips'
+import DashboardHeaderEdit from 'src/dashboards/components/DashboardHeaderEdit'
 
 const DashboardHeader = ({
+  onSave,
   children,
-  buttonText,
-  dashboard,
-  timeRange: {upper, lower},
-  zoomedTimeRange: {zoomedLower, zoomedUpper},
-  autoRefresh,
+  onCancel,
+  isEditMode,
   isHidden,
+  dashboard,
+  onAddCell,
+  autoRefresh,
+  dashboardName,
+  onEditDashboard,
   handleChooseTimeRange,
   handleChooseAutoRefresh,
-  handleClickPresentationButton,
-  onAddCell,
-  onEditDashboard,
   onToggleTempVarControls,
   showTemplateControlBar,
+  timeRange: {upper, lower},
+  handleClickPresentationButton,
+  zoomedTimeRange: {zoomedLower, zoomedUpper},
 }) =>
   isHidden
     ? null
     : <div className="page-header full-width">
         <div className="page-header__container">
-          <div className="page-header__left">
-            {buttonText &&
-              <div className="dropdown page-header-dropdown">
-                <button
-                  className="dropdown-toggle"
-                  type="button"
-                  data-toggle="dropdown"
-                >
-                  <span>
-                    {buttonText}
-                  </span>
-                  <span className="caret" />
-                </button>
-                <ul className="dropdown-menu">
-                  {children}
-                </ul>
-              </div>}
+          <div
+            className={
+              dashboard
+                ? 'page-header__left page-header__dash-editable'
+                : 'page-header__left'
+            }
+          >
             {children.length > 1
               ? <div className="dropdown dashboard-switcher">
                   <button
@@ -59,6 +54,17 @@ const DashboardHeader = ({
                   </ul>
                 </div>
               : null}
+            {dashboard
+              ? <DashboardHeaderEdit
+                  onSave={onSave}
+                  onCancel={onCancel}
+                  dashboardName={dashboardName}
+                  onEditDashboard={onEditDashboard}
+                  isEditMode={isEditMode}
+                />
+              : <h1 className="page-header__title">
+                  {dashboardName}
+                </h1>}
           </div>
           <div className="page-header__right">
             <GraphTips />
@@ -67,15 +73,6 @@ const DashboardHeader = ({
               ? <button className="btn btn-primary btn-sm" onClick={onAddCell}>
                   <span className="icon plus" />
                   Add Cell
-                </button>
-              : null}
-            {dashboard
-              ? <button
-                  className="btn btn-default btn-sm"
-                  onClick={onEditDashboard}
-                >
-                  <span className="icon pencil" />
-                  Rename
                 </button>
               : null}
             {dashboard
@@ -121,7 +118,8 @@ DashboardHeader.defaultProps = {
 
 DashboardHeader.propTypes = {
   children: array,
-  buttonText: string,
+  dashboardName: string.isRequired,
+  onEditDashboard: func.isRequired,
   dashboard: shape({}),
   timeRange: shape({
     lower: string,
@@ -129,14 +127,16 @@ DashboardHeader.propTypes = {
   }).isRequired,
   autoRefresh: number.isRequired,
   isHidden: bool.isRequired,
+  isEditMode: bool,
   handleChooseTimeRange: func.isRequired,
   handleChooseAutoRefresh: func.isRequired,
   handleClickPresentationButton: func.isRequired,
   onAddCell: func,
-  onEditDashboard: func,
   onToggleTempVarControls: func,
   showTemplateControlBar: bool,
   zoomedTimeRange: shape({}),
+  onCancel: func.isRequired,
+  onSave: func.isRequired,
 }
 
 export default DashboardHeader
